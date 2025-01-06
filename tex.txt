@@ -1,0 +1,11 @@
+pytest --cov --cov-report=html:coverage_re
+
+locust -f test_carga.py --host=http://localhost:5000
+
+brew services stop postgresql@16
+brew services start postgresql@16
+
+
+sudo lsof -i :5432
+flask --app main recreate_db
+brew services restart  postgresql
