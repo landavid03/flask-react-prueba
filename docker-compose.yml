@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./back
+    container_name: backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=deacero
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - FLASK_ENV=${FLASK_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - db
+    command: python main.py
+
+  frontend:
+    build:
+      context: ./front
+    container_name: frontend
+    ports:
+      - "5173:5173"
+
+  db:
+    image: postgres:15
+    container_name: db
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: deacero
+    volumes:
+      - ./deacero.sql:/docker-entrypoint-initdb.d/deacero.sql
+
+volumes:
+  db_data:

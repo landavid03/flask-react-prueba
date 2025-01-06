@@ -1,0 +1,266 @@
+# static/swagger.yaml
+openapi: 3.0.0
+info:
+  title: Inventory Management API
+  description: API for managing products, inventory, and stock movements in a retail chain.
+  version: "1.0.0"
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/products:
+    get:
+      summary: Get a list of products
+      parameters:
+        - name: category
+          in: query
+          description: Filter by category
+          required: false
+          schema:
+            type: string
+        - name: price
+          in: query
+          description: Filter by price less than or equal to
+          required: false
+          schema:
+            type: number
+        - name: stock
+          in: query
+          description: Filter by stock availability
+          required: false
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number for pagination
+          required: false
+          schema:
+            type: integer
+        - name: per_page
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    category:
+                      type: string
+                    price:
+                      type: number
+                    sku:
+                      type: string
+    post:
+      summary: Create a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - name
+                - category
+                - price
+                - sku
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                description:
+                  type: string
+                category:
+                  type: string
+                price:
+                  type: number
+                sku:
+                  type: string
+      responses:
+        201:
+          description: Product created successfully
+        400:
+          description: Missing required fields
+  /api/products/{id}:
+    get:
+      summary: Get a specific product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Details of the product
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  category:
+                    type: string
+                  price:
+                    type: number
+                  sku:
+                    type: string
+        404:
+          description: Product not found
+    put:
+      summary: Update a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                category:
+                  type: string
+                price:
+                  type: number
+                sku:
+                  type: string
+      responses:
+        200:
+          description: Product updated successfully
+        404:
+          description: Product not found
+    delete:
+      summary: Delete a product by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product deleted successfully
+        404:
+          description: Product not found
+  /api/stores/{store_id}/inventory:
+    get:
+      summary: Get inventory for a specific store
+      parameters:
+        - name: store_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Inventory details
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    product_id:
+                      type: string
+                    store_id:
+                      type: string
+                    quantity:
+                      type: integer
+                    min_stock:
+                      type: integer
+  /api/stock:
+    post:
+      summary: Create stock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_id
+                - store_id
+                - quantity
+                - min_stock
+              properties:
+                product_id:
+                  type: string
+                store_id:
+                  type: string
+                quantity:
+                  type: integer
+                min_stock:
+                  type: integer
+      responses:
+        200:
+          description: Add stock successfully
+        400:
+          description: No stock added
+  /api/inventory/transfer:
+    post:
+      summary: Transfer inventory between stores
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - product_id
+                - source_store_id
+                - target_store_id
+                - quantity
+              properties:
+                product_id:
+                  type: string
+                source_store_id:
+                  type: string
+                target_store_id:
+                  type: string
+                quantity:
+                  type: integer
+      responses:
+        200:
+          description: Transfer completed successfully
+        400:
+          description: Insufficient stock
+  /api/inventory/alerts:
+    get:
+      summary: Get inventory alerts for low stock
+      responses:
+        200:
+          description: List of low stock items
+          content:
+            application/json:
+              schema:
+                type: array
