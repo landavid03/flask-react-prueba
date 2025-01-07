@@ -1,0 +1,51 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="26.0.4">
+  <diagram id="architecture" name="Página-1">
+    <mxGraphModel dx="2218" dy="615" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1024" pageHeight="768" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="compute-engine" value="GCP Compute Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B5FF23;strokeColor=#FF0000;" parent="1" vertex="1">
+          <mxGeometry x="-20" width="680" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="docker-container" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;strokeWidth=2;strokeColor=#999999;fillColor=#32D6FF;align=right;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="580" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" value="Frontend (React.js)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D9EAD3;strokeColor=#6AA84F;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="backend" value="Backend (Flask)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE5CD;strokeColor=#E69138;" parent="1" vertex="1">
+          <mxGeometry x="250" y="50" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="database" value="Database (PostgreSQL)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C9DAF8;strokeColor=#3C78D8;" parent="1" vertex="1">
+          <mxGeometry x="450" y="50" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" parent="1" source="frontend" target="backend" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;" parent="1" source="backend" target="database" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-1" value="Docker Container" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="160" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="5sI_aWAEtyL_eNQFmrdd-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="310" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-2" value="" style="shape=actor;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="390" width="40" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-3" value="GCP Compute Engine&amp;nbsp;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="280" y="250" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-7" value="Cliente" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="280" y="450" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5sI_aWAEtyL_eNQFmrdd-8" value="http://34.51.3.199:5173/" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="350" y="340" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
