@@ -1,5 +1,6 @@
 from .test_routes import test_client
 
+
 def test_inventory_transfer(test_client):
     # Setup: Add products and inventory
     product = {

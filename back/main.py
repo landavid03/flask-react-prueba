@@ -9,6 +9,8 @@ from models.base import db
 from logger import logger
 from flask import request
 from settings import SWAGGER_URL_ENV, SWAGGER_URL_YAML
+
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     CORS(app)
@@ -49,7 +51,6 @@ def create_app(config_class=Config):
         db.create_all()
         click.echo('Base de datos inicializada correctamente.')
 
-
     @app.cli.command('recreate_db')
     def recreate_db():
         db.drop_all()
@@ -58,10 +59,7 @@ def create_app(config_class=Config):
 
     return app
 
+
 if __name__ == '__main__':
     app = create_app()
-    # Comando para inicializar la base de datos
-
     app.run(host='0.0.0.0', port=5000)
-
-    #app.run()

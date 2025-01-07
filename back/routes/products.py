@@ -6,7 +6,6 @@ from logger import logger
 product_blueprint = Blueprint('products', __name__)
 
 
-
 @product_blueprint.route('/', methods=['GET'])
 def get_products():
     logger.info("Get Products")
@@ -44,6 +43,7 @@ def get_products():
     }
     return jsonify(result)
 
+
 @product_blueprint.route('/<id>', methods=['GET'])
 def get_product(id):
     logger.info("Get Products By Id")
@@ -61,8 +61,8 @@ def get_product(id):
         'sku': product.sku
     })
 
-@product_blueprint.route('/', methods=['POST'])
 
+@product_blueprint.route('/', methods=['POST'])
 def create_product():
     data = request.json
     logger.info("Create Product", payload=data)
@@ -87,6 +87,7 @@ def create_product():
     return jsonify({'message': 'Product created successfully', 'id': new_product.id,
                     'name': new_product.name}), 201
 
+
 @product_blueprint.route('/<id>', methods=['PUT'])
 def update_product(id):
     data = request.json
@@ -109,7 +110,8 @@ def update_product(id):
         return jsonify({'error': str(e)}), 500
 
     logger.info('Product updated successfully')
-    return jsonify({'message': 'Product updated successfully','name': product.name})
+    return jsonify({'message': 'Product updated successfully', 'name': product.name})
+
 
 @product_blueprint.route('/<id>', methods=['DELETE'])
 def delete_product(id):
@@ -129,4 +131,4 @@ def delete_product(id):
         return jsonify({'error': str(e)}), 500
 
     logger.info('Product deleted successfully')
-    return jsonify({'message': 'Product deleted successfully'}),204
+    return jsonify({'message': 'Product deleted successfully'}), 204

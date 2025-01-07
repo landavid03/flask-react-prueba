@@ -1,5 +1,6 @@
 from locust import HttpUser, TaskSet, task, between
 
+
 class ProductTasks(TaskSet):
 
     @task(1)
@@ -42,6 +43,7 @@ class ProductTasks(TaskSet):
     #         },
     #     )
 
+
 class WebsiteUser(HttpUser):
     tasks = [ProductTasks]
-    wait_time = between(1, 2)  # Tiempo entre peticiones
+    wait_time = between(1, 2)

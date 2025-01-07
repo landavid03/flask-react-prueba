@@ -5,6 +5,7 @@ from logger import logger
 
 stock_blueprint = Blueprint('stock', __name__)
 
+
 @stock_blueprint.route('/stores/<store_id>/inventory', methods=['GET'])
 def get_inventory(store_id):
     logger.info("Get Inventory")
@@ -26,16 +27,16 @@ def get_inventory(store_id):
 def create_stock():
     data = request.json
     logger.info("Create Stock", payload=data)
-    if not all(k in data for k in ('product_id', 'store_id', 'quantity','min_stock')):
+    if not all(k in data for k in ('product_id', 'store_id', 'quantity', 'min_stock')):
         logger.error('Missing required fields')
         return jsonify({'error': 'Missing required fields'}), 400
 
     try:
         new_product = Stock(
-            product_id = data['product_id'],
-            store_id = data['store_id'],
-            quantity = data['quantity'],
-            min_stock = data['min_stock']
+            product_id=data['product_id'],
+            store_id=data['store_id'],
+            quantity=data['quantity'],
+            min_stock=data['min_stock']
         )
         db.session.add(new_product)
         db.session.commit()
@@ -46,7 +47,6 @@ def create_stock():
 
     logger.info('Stock added successfully')
     return jsonify({'message': 'Stock added successfully'}), 201
-
 
 
 @stock_blueprint.route('/inventory/transfer', methods=['POST'])
@@ -108,13 +108,13 @@ def inventory_alerts():
 
     result = {
         'products': [
-        {
-            'id': item.id,
-            'product_id': item.product_id,
-            'store_id': item.store_id,
-            'quantity': item.quantity,
-            'min_stock': item.min_stock
-        } for item in low_stock_items
+            {
+                'id': item.id,
+                'product_id': item.product_id,
+                'store_id': item.store_id,
+                'quantity': item.quantity,
+                'min_stock': item.min_stock
+            } for item in low_stock_items
         ],
         'pagination': {
             'current_page': pagination.page,
