@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "ff383354-aa08-47ef-9d8f-48413c21ab14",
+		"name": "Products and Inventory Management API",
+		"description": "Collection for managing products and inventory across stores",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Products Management",
+			"item": [
+				{
+					"name": "List Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products?size=100",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": ":category",
+									"description": "Filter by product category",
+									"disabled": true
+								},
+								{
+									"key": "minStock",
+									"value": ":minStock",
+									"description": "Minimum stock filter",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"description": "Page number for pagination",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "100",
+									"description": "Items per page"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Product ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Product Name\",\n    \"description\": \"Product Description\",\n    \"price\": 99.99,\n    \"category\": \"Category\",\n    \"sku\": 1234\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product Massive",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Pre-request Script",
+									"const numberOfProducts = 10; // Puedes ajustar este número según necesites",
+									"const categories = ['Electronics', 'Clothing', 'Books', 'Home', 'Sports'];",
+									"const productPrefixes = ['Premium', 'Basic', 'Pro', 'Ultra', 'Elite'];",
+									"",
+									"function generateRandomPrice(min, max) {",
+									"    return (Math.random() * (max - min) + min).toFixed(2);",
+									"}",
+									"",
+									"function generateRandomStock(min, max) {",
+									"    return Math.floor(Math.random() * (max - min + 1)) + min;",
+									"}",
+									"",
+									"function generateProductName() {",
+									"    const prefix = productPrefixes[Math.floor(Math.random() * productPrefixes.length)];",
+									"    const category = categories[Math.floor(Math.random() * categories.length)];",
+									"    const number = Math.floor(Math.random() * 1000);",
+									"    return `${prefix} ${category} ${number}`;",
+									"}",
+									"",
+									"const products = [];",
+									"",
+									"for (let i = 0; i < numberOfProducts; i++) {",
+									"    const category = categories[Math.floor(Math.random() * categories.length)];",
+									"    ",
+									"    products.push({",
+									"        name: generateProductName(),",
+									"        description: `High quality product for ${category} category`,",
+									"        price: Number(generateRandomPrice(10, 1000)),",
+									"        category: category,",
+									"        stock: generateRandomStock(1, 100),",
+									"        sku: `SKU-${Math.random().toString(36).substring(7).toUpperCase()}`,",
+									"        specifications: {",
+									"            weight: `${generateRandomStock(1, 10)} kg`,",
+									"            dimensions: `${generateRandomStock(10, 50)}x${generateRandomStock(10, 50)}x${generateRandomStock(10, 50)} cm`",
+									"        }",
+									"    });",
+									"}",
+									"",
+									"// Guardar los productos en una variable de ambiente para usar en las pruebas",
+									"pm.environment.set('generatedProducts', JSON.stringify(products));",
+									"",
+									"// Configurar el primer producto como el body de la request actual",
+									"pm.variables.set('currentProduct', JSON.stringify(products[0]));"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Tests",
+									"const products = JSON.parse(pm.environment.get('generatedProducts'));",
+									"const currentIndex = pm.variables.get('currentProductIndex') || 0;",
+									"// Verificar la respuesta del producto actual",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Response has correct format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    console.log(`${responseData.id}` );",
+									"    pm.expect(responseData).to.be.an('object');  ",
+									"});",
+									"",
+									"// Guardar el ID del producto creado",
+									"const responseData = pm.response.json();",
+									"const productIds = pm.environment.get('createdProductIds') ? ",
+									"JSON.parse(pm.environment.get('createdProductIds')) : [];",
+									"productIds.push(responseData.id);",
+									"pm.environment.set('createdProductIds', JSON.stringify(productIds));",
+									"",
+									"// Configurar la siguiente iteración si hay más productos",
+									"",
+									"const nextIndex = currentIndex + 1;",
+									"if (nextIndex < products.length) {",
+									"    pm.variables.set('currentProductIndex', nextIndex);",
+									"    pm.variables.set('currentProduct', JSON.stringify(products[nextIndex]));    ",
+									"    // Configurar la siguiente request",
+									"    postman.setNextRequest(pm.info.requestName);",
+									"} else {",
+									"    // Limpiar variables cuando se complete",
+									"    pm.environment.unset('currentProductIndex');",
+									"    postman.setNextRequest(null);",
+									"    console.log(`Creación masiva completada. ${products.length} productos creados.`);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{currentProduct}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Product Name\",\n    \"description\": \"Product Description\",\n    \"price\": 100.99,\n    \"category\": \"Category\",\n    \"sku\": 1234\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Product ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "Product ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory Management",
+			"item": [
+				{
+					"name": "Get Store Inventory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/stores/:id/inventory",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"stores",
+								":id",
+								"inventory"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "Store ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Stock",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 2,\n    \"store_id\": 1,\n    \"quantity\": 10,\n    \"min_stock\": 100\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/stock",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"stock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transfer Inventory",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"source_store_id\": \"1\",\n    \"target_store_id\": \"2\",\n    \"product_id\": \"1\",\n    \"quantity\": 100\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/transfer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"transfer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Low Stock Alerts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/inventory/alerts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"inventory",
+								"alerts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://127.0.0.1:5000",
+			"type": "string"
+		}
+	]
+}
