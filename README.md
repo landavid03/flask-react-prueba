@@ -257,3 +257,7 @@ Frontend:
 Backend: 
 
 - http://34.51.3.199:5000/api/products
+
+Swagger UI:
+
+- http://34.51.3.199:5000/api/docs/#/
