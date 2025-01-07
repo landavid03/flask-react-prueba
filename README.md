@@ -69,7 +69,10 @@ No se uso Cloud Run debido a que es para aplicaciones "serverless" y puede ser u
 
 #### Diagrama Arquitectura: 
 
-TODO
+<img width="587" alt="image" src="https://github.com/user-attachments/assets/fecaa512-5e81-4f0e-acdf-25c7371e8015" />
+
+
+
 ## API Reference
 
 
@@ -134,6 +137,9 @@ TODO
 Adicional a esto se puede obtener la documentacion entrando a Swagger 
 
   http://localhost:5000/api/docs/#/default
+
+  <img width="1417" alt="image" src="https://github.com/user-attachments/assets/bca851f8-f410-46aa-ac5b-49e4fa7593f8" />
+
 
 ## Environment Variables
 
@@ -227,7 +233,8 @@ Para ejecutar las pruebas unitarias es necesario tener pytest y ejecutar los sig
 
 #### Datos del reporte: 
 
-TODO
+<img width="740" alt="image" src="https://github.com/user-attachments/assets/2c1a5666-56f8-4bc4-bb8a-89a3e4cff44d" />
+
 
 
 ### Test carga: 
